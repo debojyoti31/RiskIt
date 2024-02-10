@@ -1,5 +1,6 @@
 import random
 import pandas as pd
+import time
 
 class MultiplayerGame:
     def __init__(self, value, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent):
@@ -17,14 +18,15 @@ class MultiplayerGame:
     def add_player(self, player):
          self.players.append(player)
 
-         
+
     def play_round(self):
 
         winners = []
         losers = []
 
         for player in self.players:
-            
+         
+            random.seed(time.time())
             win_probability = random.random()  # Random number between 0 and 1
             if win_probability * 100.0 > player.get_risk_factor():
                 winners.append(player)
@@ -73,14 +75,13 @@ class MultiplayerGame:
                 "Win": player.get_win()
             })
         return pd.DataFrame(player_data)
-    
+
 
     def get_company_revenue(self):
         return self.company_revenue
-    
+
     def set_company_revenue(self, company_revenue):
          self.company_revenue = company_revenue
 
     def set_remaining_pool_value(self, remaining_pool_value):
          self.remaining_pool_value = remaining_pool_value
-
