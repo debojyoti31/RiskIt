@@ -2,6 +2,13 @@ import streamlit as st
 from MultiplayerGame import MultiplayerGame
 from Player import Player
 
+def reset_game_session(value, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent):
+    st.session_state.game = MultiplayerGame(value, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent)
+def reset_amount():
+        for player in st.session_state.game.players:
+            player.set_win(0)
+        st.session_state.game.set_company_revenue(0)
+        st.session_state.game.set_remaining_pool_value(0)
 def main():
     st.title("RiskIt Multiplayer Game")
 
@@ -14,9 +21,10 @@ def main():
     kings_percent = st.sidebar.slider("Kings Percent:", min_value=5.0, max_value=90.0, value=10.0, step=1.0)
     company_revenue_percent = st.sidebar.slider("Company Revenue Percent:", min_value=0.5, max_value=10.0, value=1.5, step=0.1)
 
-    # Initialize or create a new game instance if not already present
-    if 'game' not in st.session_state:
-        st.session_state.game = MultiplayerGame(value, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent)
+    # Initialize or create a new game instance if not already present or if settings have changed
+    if 'game' not in st.session_state or st.session_state.game_settings != (value, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent):
+        reset_game_session(value, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent)
+        st.session_state.game_settings = (value, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent)
 
     # Display game details
     st.subheader("Game Details")
@@ -60,10 +68,7 @@ def main():
         st.write(f"**Company Revenue:** {st.session_state.game.get_company_revenue()}")
 
         # Reset player and company data
-        for player in st.session_state.game.players:
-            player.set_win(0)
-        st.session_state.game.set_company_revenue(0)
-        st.session_state.game.set_remaining_pool_value(0)
+        reset_amount()
 
 if __name__ == "__main__":
     main()
