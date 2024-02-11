@@ -2,7 +2,7 @@ def main():
     st.title("RiskIt Multiplayer Game")
 
     # Rules expander
-    with st.expander("Rules"):
+    with st.expander("Rules", expanded=False):
         st.markdown("""
         1. **Equal Contribution**: Each player contributes an equal amount of money to the pool. Let's say each player contributes $10.
         2. **Risk Factor**: Each player sets a risk factor. Higher risk factors imply lower chances of winning.
@@ -19,7 +19,7 @@ def main():
 
     # Sidebar inputs
     st.sidebar.header("Game Settings")
-    value = st.sidebar.number_input("Initial Contribution:", min_value=10.0, max_value=None, value=100.0, step=10.0)
+    initial_contribution = st.sidebar.number_input("Initial Contribution:", min_value=10.0, max_value=None, value=100.0, step=10.0)
     min_risk_factor = st.sidebar.slider("Minimum Risk Factor:", min_value=1.0, max_value=99.0, value=30.0, step=0.5)
     max_risk_factor = st.sidebar.slider("Maximum Risk Factor:", min_value=min_risk_factor, max_value=99.0, value=70.0, step=0.5)
     king_risk_factor = st.sidebar.slider("King Risk Factor:", min_value=min_risk_factor, max_value=max_risk_factor, value=max_risk_factor, step=0.5)
@@ -27,18 +27,20 @@ def main():
     company_revenue_percent = st.sidebar.slider("Company Revenue Percent:", min_value=0.5, max_value=10.0, value=1.5, step=0.1)
 
     # Initialize or create a new game instance if not already present or if settings have changed
-    if 'game' not in st.session_state or st.session_state.game_settings != (value, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent):
-        reset_game_session(value, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent)
-        st.session_state.game_settings = (value, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent)
+    if 'game' not in st.session_state or st.session_state.game_settings != (initial_contribution, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent):
+        reset_game_session(initial_contribution, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent)
+        st.session_state.game_settings = (initial_contribution, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent)
 
-    # Display game details
+    # Display game details as formatted markdown
     st.subheader("Game Details")
-    st.write(f"- Initial Contribution: ${value}")
-    st.write(f"- Minimum Risk Factor: {min_risk_factor}")
-    st.write(f"- Maximum Risk Factor: {max_risk_factor}")
-    st.write(f"- King Risk Factor: {king_risk_factor}")
-    st.write(f"- Kings Percent: {kings_percent}%")
-    st.write(f"- Company Revenue Percent: {company_revenue_percent}%")
+    st.markdown(f"""
+    - **Initial Contribution:** ${initial_contribution:.2f}
+    - **Minimum Risk Factor:** {min_risk_factor:.1f}
+    - **Maximum Risk Factor:** {max_risk_factor:.1f}
+    - **King Risk Factor:** {king_risk_factor:.1f}
+    - **Kings Percent:** {kings_percent:.1f}%
+    - **Company Revenue Percent:** {company_revenue_percent:.1f}%
+    """)
 
     # Adding players
     with st.form("player_form"):
@@ -64,7 +66,7 @@ def main():
         st.table(player_data)
     else:
         st.write("No players added yet.")
-    st.write(f"Total Pool Amount: {value*len(st.session_state.game.players)}")
+    st.write(f"Total Pool Amount: {initial_contribution*len(st.session_state.game.players)}")
 
     # Play a round
     if st.button("Play Round"):
