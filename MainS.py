@@ -1,3 +1,18 @@
+
+import streamlit as st
+from MultiplayerGame import MultiplayerGame
+from Player import Player
+
+def reset_game_session(value, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent):
+    st.session_state.game = MultiplayerGame(value, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent)
+
+def reset_amount():
+    for player in st.session_state.game.players:
+        player.set_win(0)
+    st.session_state.game.set_company_revenue(0)
+    st.session_state.game.set_remaining_pool_value(0)
+
+
 def main():
     st.title("RiskIt Multiplayer Game")
 
