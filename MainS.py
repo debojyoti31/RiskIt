@@ -79,23 +79,24 @@ def main():
     player_data = [(player.name, player.risk_factor) for player in st.session_state.game.players]
     if player_data:
         st.table(player_data)
-    else:
-        st.write("No players added yet.")
-    st.write(f"Total Pool Amount: {initial_contribution*len(st.session_state.game.players)}")
+        st.write(f"Total Pool Amount: {initial_contribution*len(st.session_state.game.players)}")
 
     # Play a round
-    if st.button("Play Round"):
-        st.subheader("Round Results")
-        st.session_state.game.play_round()
-
-        # Display updated player details
-        st.write("**Updated Player Details:**")
-        df_players = st.session_state.game.get_player_details()
-        st.dataframe(df_players)
-        st.write(f"**Company Revenue:** {st.session_state.game.get_company_revenue()}")
-
-        # Reset player and company data
-        reset_amount()
+    if len(player_data) > 2:
+        if st.button("Play Round"):
+            st.subheader("Round Results")
+            st.session_state.game.play_round()
+    
+            # Display updated player details
+            st.write("**Updated Player Details:**")
+            df_players = st.session_state.game.get_player_details()
+            st.dataframe(df_players)
+            st.write(f"**Company Revenue:** {st.session_state.game.get_company_revenue()}")
+    
+            # Reset player and company data
+            reset_amount()
+    else:
+        st.error("Add atleast 3 players to play...")
 
 if __name__ == "__main__":
     main()
