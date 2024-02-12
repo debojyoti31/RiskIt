@@ -1,4 +1,4 @@
-
+import pandas as pd
 import streamlit as st
 from MultiplayerGame import MultiplayerGame
 from Player import Player
@@ -75,10 +75,11 @@ def main():
                 st.success(f"Added player {player_name} with risk factor {risk_factor}")
 
     # Display the list of players in the game
-    st.header("Players in the Game")
     player_data = [(player.name, player.risk_factor) for player in st.session_state.game.players]
     if player_data:
-        st.table(player_data)
+        st.header("Players in the Game")
+        df = pd.DataFrame(player_data, columns=['Player Name', 'Risk Factor'])
+        st.dataframe(df)
         st.write(f"Total Pool Amount: {initial_contribution*len(st.session_state.game.players)}")
 
     # Play a round
