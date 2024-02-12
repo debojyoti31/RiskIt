@@ -21,14 +21,14 @@ def main():
         st.markdown("""
         1. **Equal Contribution**: Each player contributes an equal amount of money to the pool. Let's say each player contributes $10.
         2. **Risk Factor**: Each player sets a risk factor. Higher risk factors imply lower chances of winning.
-        3. **Random Outcome**: In each round, players are randomly assigned as winners or losers based on their risk factors. Higher risk factors decrease the chances of winning.
-        4. **Company Cut**: A predefined small percentage of money from the losers is taken by the company, and the remaining money from losers is returned to the pool.
-        5. **Pool Distribution for Winners**:
+        3. **Random Outcome**: In each round, players are randomly assigned as winners or losers based on their risk factors. Lower risk factors increase the chances of winning.
+        4. **Pool Distribution for Winners**:
            - The highest risk factor winners divide the pool money equally among themselves and also get back their original contribution.
            - Other winners get back their original contribution only.
-        6. **King Winners**: If there are winners with the highest risk factors whose risk factor surpasses a predefined threshold (very big risk):
+        5. **King Winners**: If there are winners with the highest risk factors whose risk factor surpasses a predefined threshold (very big risk):
            - Other winners (non-kings) must give a predefined percentage of their money to the kings.
            - Kings get back their original contribution plus the pool money from losers and the bonus money from other winners.
+        6. **Company Cut**: A predefined small percentage of money from the losers is taken by the company, and the remaining money from losers is returned to the pool.
         7. **No Winners Scenario**: If no player wins in a round, all players get back their original money minus the company cut (as they all are losers) as a consolation prize.
         """)
 
