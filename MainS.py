@@ -23,7 +23,7 @@ def main():
         2. **Risk Factor**: Each player sets a risk factor. Higher risk factors imply lower chances of winning.
         3. **Random Outcome**: In each round, players are randomly assigned as winners or losers based on their risk factors. Lower risk factors increase the chances of winning.
         4. **Pool Distribution for Winners**:
-           - The highest risk factor winners divide the pool money equally among themselves and also get back their original contribution.
+           - The __highest risk factor winners__ divide the pool money equally among themselves and also get back their original contribution.
            - Other winners get back their original contribution only.
         5. **King Winners**: If there are winners with the highest risk factors whose risk factor surpasses a predefined threshold (very big risk):
            - Other winners (non-kings) must give a predefined percentage of their money to the kings.
