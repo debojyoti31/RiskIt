@@ -84,19 +84,18 @@ def main():
 
     # Play a round
     if len(player_data) > 2:
-        with st.spinner('Wait for it...'):
-            if st.button("Play Round"):
-                st.subheader("Round Results")
+        if st.button("Play Round"):
+            st.subheader("Round Results")
+            with st.spinner('Wait for it...'):
                 st.session_state.game.play_round()
-        
                 # Display updated player details
                 st.write("**Updated Player Details:**")
                 df_players = st.session_state.game.get_player_details()
                 st.dataframe(df_players)
                 st.write(f"**Company Revenue:** {st.session_state.game.get_company_revenue()}")
-        
-                # Reset player and company data
-                reset_amount()
+    
+            # Reset player and company data
+            reset_amount()
     else:
         st.error("Add atleast 3 players to play...")
 
