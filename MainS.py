@@ -15,6 +15,7 @@ def reset_amount():
 
 def main():
     st.title("RiskIt Multiplayer Game")
+    st.warning("Please refrain from playing it with real money. It is designed purely for entertainment purposes and does not involve any form of real-money gambling.")
 
     # Rules expander
     with st.expander("Rules", expanded=False):
@@ -58,7 +59,7 @@ def main():
     """)
 
     # Adding players
-    st.subheader("Add Players to Game:")
+    st.subheader("Add Players:")
     player_df = st.data_editor(pd.DataFrame( columns = ["Player Name", "Risk_factor"]), num_rows="dynamic", on_change= reset_game_session(initial_contribution, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent))
     for index, row in player_df.iterrows():
         if row["Player Name"] == None:
