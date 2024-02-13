@@ -20,7 +20,7 @@ def main():
     with st.expander("Rules", expanded=False):
         st.markdown("""
         1. **Equal Contribution**: Each player contributes an equal amount of money to the pool. Let's say each player contributes $10.
-        2. **Risk Factor**: Each player sets a risk factor. Higher risk factors imply lower chances of winning.
+        2. **Risk Factor**: Each player sets a risk factor. __The game rewards the highest risk takers.__
         3. **Random Outcome**: In each round, players are randomly assigned as winners or losers based on their risk factors. Lower risk factors increase the chances of winning.
         4. **Pool Distribution for Winners**:
            - The __highest risk factor winners__ divide the pool money equally among themselves and also get back their original contribution.
