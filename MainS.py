@@ -59,11 +59,7 @@ def main():
 
     # Adding players
     st.subheader("Add Players to Game:")
-    player_df = st.data_editor(pd.DataFrame(
-        [
-        {"Player Name": None, "Risk_factor": None},
-    ]
-    ), num_rows="dynamic", on_change= reset_game_session(initial_contribution, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent))
+    player_df = st.data_editor(pd.DataFrame( columns = ("Player Name", "Risk_factor"), num_rows="dynamic", on_change= reset_game_session(initial_contribution, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent))
     for index, row in player_df.iterrows():
         if row["Player Name"] == None:
             player_name = ""
