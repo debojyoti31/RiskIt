@@ -32,14 +32,14 @@ def main():
         7. **No Winners Scenario**: If no player wins in a round, all players get back their original money minus the company cut (as they all are losers) as a consolation prize.
         """)
 
-    # Sidebar inputs
-    st.sidebar.header("Game Settings")
-    initial_contribution = st.sidebar.number_input("Initial Contribution:", min_value=10.0, max_value=None, value=100.0, step=10.0)
-    min_risk_factor = st.sidebar.slider("Minimum Risk Factor:", min_value=1.0, max_value=99.0, value=30.0, step=0.5)
-    max_risk_factor = st.sidebar.slider("Maximum Risk Factor:", min_value=min_risk_factor, max_value=99.0, value=80.0, step=0.5)
-    king_risk_factor = st.sidebar.slider("King Risk Factor:", min_value=min_risk_factor, max_value=max_risk_factor, value=65.0, step=0.5)
-    kings_percent = st.sidebar.slider("Kings Percent:", min_value=5.0, max_value=90.0, value=10.0, step=1.0)
-    company_revenue_percent = st.sidebar.slider("Company Revenue Percent:", min_value=0.0, max_value=10.0, value=1.0, step=0.1)
+    # Game Settings
+    with st.expander("Game Settings", expanded=False):
+        initial_contribution = st.sidebar.number_input("Initial Contribution:", min_value=10.0, max_value=None, value=100.0, step=10.0)
+        min_risk_factor = st.sidebar.slider("Minimum Risk Factor:", min_value=1.0, max_value=99.0, value=30.0, step=0.5)
+        max_risk_factor = st.sidebar.slider("Maximum Risk Factor:", min_value=min_risk_factor, max_value=99.0, value=80.0, step=0.5)
+        king_risk_factor = st.sidebar.slider("King Risk Factor:", min_value=min_risk_factor, max_value=max_risk_factor, value=65.0, step=0.5)
+        kings_percent = st.sidebar.slider("Kings Percent:", min_value=5.0, max_value=90.0, value=10.0, step=1.0)
+        company_revenue_percent = st.sidebar.slider("Company Revenue Percent:", min_value=0.0, max_value=10.0, value=1.0, step=0.1)
 
     # Initialize or create a new game instance if not already present or if settings have changed
     if 'game' not in st.session_state or st.session_state.game_settings != (initial_contribution, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent):
@@ -47,7 +47,7 @@ def main():
         st.session_state.game_settings = (initial_contribution, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent)
 
     # Display game details as formatted markdown
-    st.subheader("Game Details")
+    st.subheader("Current Game Settings")
     st.markdown(f"""
     - **Initial Contribution:** ${initial_contribution:.2f}
     - **Minimum Risk Factor:** {min_risk_factor:.1f}
