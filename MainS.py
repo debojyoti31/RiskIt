@@ -47,8 +47,8 @@ def main():
         st.session_state.game_settings = (initial_contribution, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent)
 
     # Display game details as formatted markdown
-    st.subheader("Current Game Settings")
-    st.markdown(f"""
+    st.subheader("Current Game Settings:")
+    st.info(f"""
     - **Initial Contribution:** ${initial_contribution:.2f}
     - **Minimum Risk Factor:** {min_risk_factor:.1f}
     - **Maximum Risk Factor:** {max_risk_factor:.1f}
@@ -58,59 +58,49 @@ def main():
     """)
 
     # Adding players
-    st.header("Add Players to Game")
+    st.subheader("Add Players to Game:")
     player_df = st.data_editor(pd.DataFrame(
         [
         {"Player Name": None, "Risk_factor": None},
     ]
-    ), num_rows="dynamic")
-    if st.button("Update Players"):
-        reset_game_session(initial_contribution, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent)
-        for index, row in player_df.iterrows():
-            if row["Player Name"] == None:
-                player_name = ""
-            else:
-                player_name = row["Player Name"]
-            try:
-                risk_factor = float(row["Risk_factor"])
-            except (ValueError, TypeError):
-                risk_factor = 0.0
-            if player_name.strip() == "":
-                st.error("Player name cannot be empty.")
-            elif player_name in [player.name for player in st.session_state.game.players]:
-                st.error(f"Player with the same name,{player_name} already exists.")
-            elif not(min_risk_factor <= risk_factor <= max_risk_factor):
-                st.error(f"Risk factor of {player_name} must be between {min_risk_factor} and {max_risk_factor}")
-            else:
-                player = Player(player_name, risk_factor)
-                st.session_state.game.add_player(player)
+    ), num_rows="dynamic", on_change= reset_game_session(initial_contribution, min_risk_factor, max_risk_factor, king_risk_factor, kings_percent, company_revenue_percent))
+    for index, row in player_df.iterrows():
+        if row["Player Name"] == None:
+            player_name = ""
+        else:
+            player_name = row["Player Name"]
+        try:
+            risk_factor = float(row["Risk_factor"])
+        except (ValueError, TypeError):
+            risk_factor = 0.0
+        if player_name.strip() == "":
+            st.error("Player name cannot be empty.")
+        elif player_name in [player.name for player in st.session_state.game.players]:
+            st.error(f"Player with the same name,{player_name} already exists.")
+        elif not(min_risk_factor <= risk_factor <= max_risk_factor):
+            st.error(f"Risk factor of {player_name} must be between {min_risk_factor} and {max_risk_factor}")
+        else:
+            player = Player(player_name, risk_factor)
+            st.session_state.game.add_player(player)
 
     # Display the list of players in the game
-    player_data = [(player.name, player.risk_factor) for player in st.session_state.game.players]
-    if player_data:
-        if not len(player_df) == len(player_data):
-            st.warning ("Not all players could be added, update the players...")
-        st.header("Players in the Game")
-        df = pd.DataFrame(player_data, columns=['Player Name', 'Risk Factor'])
-        st.dataframe(df)
-        st.write(f"Total Pool Amount: {initial_contribution*len(st.session_state.game.players)}")
-
-    # Play a round
-    if len(player_data) < 3:
-        st.error("Add atleast 3 players to play...")
-    else:
-        if st.button("Play Round"):
-            st.subheader("Round Results")
-            with st.spinner('Wait for it...'):
+    if st.session_state.game.players:
+        if len(st.session_state.game.players) < 3:
+                st.error("Add atleast 3 players to play...")
+        elif not len(player_df) == len(st.session_state.game.players):
+            st.error ("Not all players could be added, update the players...")
+        else:
+            st.write(f"Total Pool Amount: {initial_contribution*len(st.session_state.game.players)}")
+            if st.button("Play Round", type="primary"):
+                st.subheader("Round Results:")
                 st.session_state.game.play_round()
                 # Display updated player details
-                st.write("**Updated Player Details:**")
                 df_players = st.session_state.game.get_player_details()
                 st.dataframe(df_players)
                 st.write(f"**Company Revenue:** {st.session_state.game.get_company_revenue()}")
-    
-            # Reset player and company data
-            reset_amount() 
+        
+                # Reset player and company data
+                reset_amount() 
 
 if __name__ == "__main__":
     main()
