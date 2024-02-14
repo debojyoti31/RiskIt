@@ -81,23 +81,20 @@ def main():
             st.session_state.game.add_player(player)
 
     # Display the list of players in the game
-    if st.session_state.game.players:
-        if len(st.session_state.game.players) < 3:
-                st.error("Add atleast 3 players to play...")
-        elif not len(player_df) == len(st.session_state.game.players):
-            st.error ("Not all players could be added, update the players...")
-        else:
-            st.write(f"Total Pool Amount: {initial_contribution*len(st.session_state.game.players)}")
-            if st.button("Play Round", type="primary"):
-                st.subheader("Round Results:")
-                st.session_state.game.play_round()
-                # Display updated player details
-                df_players = st.session_state.game.get_player_details()
-                st.dataframe(df_players)
-                st.write(f"**Company Revenue:** {st.session_state.game.get_company_revenue()}")
-        
-                # Reset player and company data
-                reset_amount() 
+    if not len(player_df) == len(st.session_state.game.players):
+        st.error ("Not all players could be added, update the players...")
+    else:
+        st.write(f"Total Pool Amount: {initial_contribution*len(st.session_state.game.players)}")
+        if st.button("Play Round", type="primary"):
+            st.subheader("Round Results:")
+            st.session_state.game.play_round()
+            # Display updated player details
+            df_players = st.session_state.game.get_player_details()
+            st.dataframe(df_players)
+            st.write(f"**Company Revenue:** {st.session_state.game.get_company_revenue()}")
+    
+            # Reset player and company data
+            reset_amount() 
 
 if __name__ == "__main__":
     main()
