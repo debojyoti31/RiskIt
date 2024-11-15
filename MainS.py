@@ -94,7 +94,7 @@ def main():
                 # Display updated player details
                 df_players = st.session_state.game.get_player_details()
                 st.dataframe(df_players)
-                st.write(f"**Company Revenue:** {st.session_state.game.get_company_revenue()}")
+                st.write(f"**Company Revenue:** {round(st.session_state.game.get_company_revenue(), 1)}")
         
                 # Reset player and company data
                 reset_amount() 
